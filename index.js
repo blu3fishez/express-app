@@ -16,7 +16,14 @@ app.set('port', process.env.PORT || 3000); // js 특성 이용, PORT 값이 없�
 
 
 // 설치했던 패키지들을 app.use에 연결한다. 각종 req, res, next 들은 미들 웨어 내부에 있다. next도 내부적으로 알아서 호출한다.
-app.use(morgan('dev'));
+app.use((req, res, next) => { // 미들웨어의 확장.
+	if(process.env.NODE_ENV === 'production'){
+		morgan('combined')(req, res, next);
+	}
+	else {
+		morgan('dev')(req, res, next);
+	}
+});
 app.use('/', express.static(path.join(__dirname, 'public')));
 // 정적인 파일을 제공하는 라우터 역할을 한다.
 // 예를들어, /index.html 을 치면 그대로 표현한다. . 부분에 public 등을 치면 해당 폴더 하위의 내용만 보여준다. 이를 통해 보안을 강화할 수 있다.
