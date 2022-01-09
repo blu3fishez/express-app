@@ -2,9 +2,9 @@
   "name": "express-app",
   "version": "0.0.0",
   "description": "Simple Express App",
-  "main": "multer/app.js",
+  "main": "app.js",
   "scripts": {
-    "test": "nodemon multer/app"
+    "test": "nodemon app.js"
   },
   "author": "",
   "license": "MIT",

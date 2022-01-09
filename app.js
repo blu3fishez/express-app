@@ -54,17 +54,26 @@ app.use((req, res, next) => { // 일반적인 미들웨어의 사용.
   next();
 });
 
-app.get('/', (req, res) => { // app.get 이란 GET 방식으로 '/' 주소로 하는 요청을 받을 때 응답에 대한 코드를 작성하게 된다.
-  // res.send('Hello Express'); , send는 한번만 보낼 수 있음.
-  // res.sendFile(path.join(__dirname, './index.html')); 파일을 보낼 때 path를 이용해 지정
-  // throw new Error('에러는 에러처리 미들웨어로 갑니다.');
-  res.sendFile(path.join(__dirname, './index.html'));
-});
+// app.get('/', (req, res) => { // app.get 이란 GET 방식으로 '/' 주소로 하는 요청을 받을 때 응답에 대한 코드를 작성하게 된다.
+//   // res.send('Hello Express'); , send는 한번만 보낼 수 있음.
+//   // res.sendFile(path.join(__dirname, './index.html')); 파일을 보낼 때 path를 이용해 지정
+//   // throw new Error('에러는 에러처리 미들웨어로 갑니다.');
+//   res.sendFile(path.join(__dirname, './index.html'));
+// });
 
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).send(err.message); // 500번 상태코드를 보냄.
-})
+// Router 객체로 라우팅 분리하기.
+const indexRouter = require('./router'); // index.js는 생략할 수 있다.
+const userRouter = require('./router/user.js');
+
+app.use('/', indexRouter);
+app.use('/user', userRouter);
+app.use((req, res, next) =>{
+	res.status(404).send('404 Page not Found');
+});
+// app.use((err, req, res, next) => {
+//   console.error(err);
+//   res.status(500).send(err.message); // 500번 상태코드를 보냄.
+// })
 
 app.listen(app.get('port'), () => {
   console.log(app.get('port'), '번 포트에서 대기 중');
